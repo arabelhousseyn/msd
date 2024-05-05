@@ -54,6 +54,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * @var string[]
+     */
+    protected $with = [
+        'company',
+    ];
+
 
     /**
      * @return BelongsTo
