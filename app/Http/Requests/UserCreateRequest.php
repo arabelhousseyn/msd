@@ -27,7 +27,7 @@ class UserCreateRequest extends FormRequest
             'last_name' => ['required', 'string'],
             'is_admin' => ['required', 'boolean'],
             'email' => ['required', 'string', 'email', 'unique:users'],
-            'company_id' => ['required', 'exists:companies,id'],
+            'company_id' => ['required',  'uuid', 'exists:companies,id'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'position' => ['required', 'string'],
         ];

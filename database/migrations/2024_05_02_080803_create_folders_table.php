@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignUuid('user_id')->constrained('users');
             $table->foreignUuid('company_id')->constrained('companies')->cascadeOnDelete();
             $table->text('comment');
-            $table->string('status');
+            $table->string('status')->default(\App\Enums\FolderStatus::DRAFT);
             $table->dateTime('end_at');
             $table->timestamps();
         });
