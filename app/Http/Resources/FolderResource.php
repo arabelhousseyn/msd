@@ -22,7 +22,8 @@ class FolderResource extends JsonResource
             'comment' => $this->comment,
             'end_at' => $this->end_at,
             'user' => UserResource::make($this->whenLoaded('user')),
-            'status' => $this->status
+            'status' => $this->status,
+            'documents' => DocumentResource::collection($this->documents),
         ];
     }
 }
