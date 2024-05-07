@@ -26,8 +26,16 @@ class Folder extends Model
     ];
 
     protected $casts = [
-        'status' => FolderStatus::class
+        'status' => FolderStatus::class,
+        'end_at' => 'datetime'
     ];
+
+    protected static function booted(): void
+    {
+        static::updating(function ($model) {
+            $model->company_id = $model->user->company_id;
+        });
+    }
 
     /**
      * @return HasMany

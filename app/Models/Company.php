@@ -35,7 +35,7 @@ class Company extends Model
         'lang' => Lang::class
     ];
 
-    protected static function booted()
+    protected static function booted(): void
     {
         static::creating(function ($company) {
             $company->code = self::generateCode($company);

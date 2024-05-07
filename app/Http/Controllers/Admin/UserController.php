@@ -8,9 +8,11 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdatePawwsordRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
@@ -113,5 +115,12 @@ class UserController extends Controller
         }
 
         throw new PasswordIncorrectException();
+    }
+
+    public function usersByCompany(Company $company): JsonResource
+    {
+        $users = User::where('company_id', $company->getKey())->where('id', '!=', Auth::id())->get();
+
+        return UserResource::collection($users);
     }
 }
