@@ -20,5 +20,6 @@ Route::prefix('/v1/admin')->group(function () {
         Route::post('/users/password-update/{user}', [UserController::class, 'updatePassword']);
         Route::post('/update', [AuthController::class, 'update']);
         Route::post('/password-update', [AuthController::class, 'updatePassword']);
+        Route::get('/users/{user}/notifications', [UserController::class, 'notifications']);
     });
 });

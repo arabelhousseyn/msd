@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdatePawwsordRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -120,5 +121,12 @@ class UserController extends Controller
         }
 
         throw new PasswordIncorrectException();
+    }
+
+    public function notifications(User $user): JsonResource
+    {
+        $notifications = $user->notifications()->latest()->get();
+
+        return NotificationResource::collection($notifications);
     }
 }
