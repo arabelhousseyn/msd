@@ -25,7 +25,7 @@ class CompanyFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'logo' => $this->faker->imageUrl(),
-            'lang' => $this->faker->languageCode(),
+            'lang' => 'en',
             'is_external' => $this->faker->boolean(),
         ];
     }
