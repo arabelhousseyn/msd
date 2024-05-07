@@ -3,10 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\InvalidCredentialsException;
+use App\Exceptions\PasswordIncorrectException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
+use App\Http\Requests\UserUpdatePawwsordRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\AuthResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -25,6 +30,39 @@ class AuthController extends Controller
         throw new InvalidCredentialsException();
     }
 
+    /**
+     * @param UserUpdateRequest $request
+     * @return AuthResource
+     */
+    public function update(UserUpdateRequest $request): AuthResource
+    {
+        Auth::user()->update($request->validated());
+
+        return AuthResource::make(Auth::user());
+    }
+
+    /**
+     * @throws PasswordIncorrectException
+     */
+    public function updatePassword(UserUpdatePawwsordRequest $request): JsonResponse
+    {
+        if(Hash::check($request->input('password_old'), Auth::user()->password))
+        {
+            $password = Hash::make($request->input('password_new'));
+
+            Auth::user()->update(['password' => $password]);
+
+            Auth::user()->tokens()->delete();
+
+            return new JsonResponse(['id' => Auth::user()->getKey()]);
+        }
+
+        throw new PasswordIncorrectException();
+    }
+
+    /**
+     * @return void
+     */
     public function logout(): void
     {
         Auth::logout();

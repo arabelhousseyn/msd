@@ -30,6 +30,10 @@ class Folder extends Model
         'end_at' => 'datetime'
     ];
 
+    protected $with = [
+        'documents'
+    ];
+
     protected static function booted(): void
     {
         static::updating(function ($model) {
@@ -60,6 +64,7 @@ class Folder extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
     /**
      * @return LogOptions
      */

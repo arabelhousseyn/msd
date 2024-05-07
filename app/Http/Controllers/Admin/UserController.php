@@ -8,9 +8,9 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdatePawwsordRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\UserResource;
-use App\Models\Company;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,9 +21,14 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResource
+    public function index(Request $request): JsonResource
     {
-        $users = User::latest('created_at')->paginate();
+        if($request->has('company_id'))
+        {
+            $users = User::where('company_id', $request->input('company_id'))->where('id', '!=', Auth::id())->get();
+        }else{
+            $users = User::latest('created_at')->paginate();
+        }
 
         return UserResource::collection($users);
     }
@@ -115,12 +120,5 @@ class UserController extends Controller
         }
 
         throw new PasswordIncorrectException();
-    }
-
-    public function usersByCompany(Company $company): JsonResource
-    {
-        $users = User::where('company_id', $company->getKey())->where('id', '!=', Auth::id())->get();
-
-        return UserResource::collection($users);
     }
 }

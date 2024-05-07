@@ -15,9 +15,13 @@ class FolderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResource
+    public function index(Request $request): JsonResource
     {
-        $folders = Folder::latest('created_at')->with('user')->get();
+        if($request->has('user_id')){
+            $folders = Folder::latest('created_at')->where('user_id', $request->input('user_id'))->get();
+        }else{
+            $folders = Folder::latest('created_at')->with('user')->get();
+        }
 
         return FolderResource::collection($folders);
     }
@@ -36,6 +40,8 @@ class FolderController extends Controller
     public function store(FolderCreateRequest $request): FolderResource
     {
         $folder = Folder::create($request->validated());
+
+        $folder->refresh();
 
         return FolderResource::make($folder);
     }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FolderController;
+use App\Http\Controllers\Admin\DocumentController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1/admin')->group(function () {
@@ -15,7 +16,9 @@ Route::prefix('/v1/admin')->group(function () {
         Route::resource('companies', CompanyController::class);
         Route::resource('users', UserController::class);
         Route::resource('folders', FolderController::class);
+        Route::resource('documents', DocumentController::class);
         Route::post('/users/password-update/{user}', [UserController::class, 'updatePassword']);
-        Route::get('/users/companies/{company}', [UserController::class, 'usersByCompany']);
+        Route::post('/update', [AuthController::class, 'update']);
+        Route::post('/password-update', [AuthController::class, 'updatePassword']);
     });
 });
