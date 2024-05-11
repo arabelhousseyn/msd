@@ -10,6 +10,7 @@ use App\Http\Requests\UserUpdatePawwsordRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\AuthResource;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -24,6 +25,9 @@ class AuthController extends Controller
             $token = $request->user()->createToken(config('auth.token_name'));
             $user = Auth::user();
             $user['token'] = $token->plainTextToken;
+            $user->load('company');
+            App::setLocale(($user->company) ? $user->company->lang->value : config('app.locale'));
+
             return AuthResource::make($user);
         }
 
