@@ -25,6 +25,7 @@ class UpdateCompanyRequest extends FormRequest
             'name' => ['bail','string', 'sometimes', 'max:255'],
             'description' => ['bail','string', 'sometimes'],
             'email' => ['bail','string', 'sometimes', 'email'],
+            'color' => ['bail','string', 'nullable'],
             'phone' => ['bail','string', 'sometimes'],
             'address' => ['bail','string', 'sometimes'],
             'logo' => ['bail','file', 'image', 'mimes:jpeg,png,jpg', 'max:2048', 'sometimes'],
