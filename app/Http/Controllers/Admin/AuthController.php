@@ -70,7 +70,7 @@ class AuthController extends Controller
      */
     public function logout(): \Illuminate\Http\Response
     {
-        Auth::guard('web')->logout();
+        Auth::user()->tokens()->delete();
 
         return response()->noContent();
     }
