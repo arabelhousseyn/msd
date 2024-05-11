@@ -64,11 +64,14 @@ class AuthController extends Controller
         throw new PasswordIncorrectException();
     }
 
+
     /**
-     * @return void
+     * @return \Illuminate\Http\Response
      */
-    public function logout(): void
+    public function logout(): \Illuminate\Http\Response
     {
         Auth::logout();
+
+        return response()->noContent();
     }
 }
