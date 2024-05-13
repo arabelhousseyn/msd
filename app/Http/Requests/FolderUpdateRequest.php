@@ -28,6 +28,7 @@ class FolderUpdateRequest extends FormRequest
             'user_id' => ['sometimes', 'uuid', 'exists:users,id'],
             'comment' => ['sometimes', 'string'],
             'status' => ['sometimes', Rule::in(FolderStatus::getValues())],
+            'notify_before' => ['sometimes', 'numeric'],
             'end_at' => ['sometimes', 'date'],
         ];
     }

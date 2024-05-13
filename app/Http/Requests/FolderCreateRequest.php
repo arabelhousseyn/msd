@@ -26,6 +26,7 @@ class FolderCreateRequest extends FormRequest
             'title' => ['required', 'string'],
             'user_id' => ['required', 'uuid', 'exists:users,id'],
             'comment' => ['required', 'string'],
+            'notify_before' => ['required', 'numeric'],
             'end_at' => ['required', 'date'],
         ];
     }
