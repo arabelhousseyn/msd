@@ -21,6 +21,7 @@ class Folder extends Model
         'user_id',
         'company_id',
         'comment',
+        'notify_before',
         'status',
         'end_at'
     ];
