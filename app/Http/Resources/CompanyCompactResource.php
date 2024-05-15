@@ -19,7 +19,8 @@ class CompanyCompactResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'lang' => $this->lang
+            'lang' => $this->lang,
+            'logo' => $this->logo
         ];
     }
 }
