@@ -25,11 +25,7 @@ class UserUpdateRequest extends FormRequest
             'avatar' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'first_name' => ['sometimes', 'string'],
             'last_name' => ['sometimes', 'string'],
-            'is_admin' => ['sometimes', 'boolean'],
             'email' => ['sometimes', 'string', 'email', 'unique:users'],
-            'company_id' => ['sometimes', 'exists:companies,id'],
-            'password' => ['sometimes', 'string', 'min:8', 'confirmed'],
-            'position' => ['sometimes', 'string'],
         ];
     }
 }
