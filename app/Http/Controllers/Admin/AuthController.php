@@ -48,7 +48,7 @@ class AuthController extends Controller
             $path = config('app.url') . Storage::url($path);
         }
 
-        Auth::user()->update(array_merge($request->validated(), ['avatar' => $path]));
+        Auth::user()->update(array_merge($request->except('avatar'), ['avatar' => $path]));
 
         return AuthResource::make(Auth::user());
     }
