@@ -25,7 +25,7 @@ class UserUpdateRequest extends FormRequest
             'avatar' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'first_name' => ['sometimes', 'string'],
             'last_name' => ['sometimes', 'string'],
-            'email' => ['sometimes', 'string', 'email', 'unique:users'],
+            'email' => ['sometimes', 'string', 'email'],
         ];
     }
 }
