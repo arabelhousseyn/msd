@@ -13,6 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -40,7 +41,14 @@ class AuthController extends Controller
      */
     public function update(UserUpdateRequest $request): AuthResource
     {
-        Auth::user()->update($request->validated());
+        $path = Auth::user()->avatar;
+
+        if($request->hasFile('avatar')){
+            $path = $request->file('avatar')->store('user', 'public');
+            $path = config('app.url') . Storage::url($path);
+        }
+
+        Auth::user()->update(array_merge($request->validated(), ['avatar' => $path]));
 
         return AuthResource::make(Auth::user());
     }
