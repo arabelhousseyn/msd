@@ -18,7 +18,7 @@ class CompanyController extends Controller
      */
     public function index(): JsonResource
     {
-        $companies = Company::latest('created_at')->paginate();
+        $companies = Company::latest('created_at')->get();
 
         return CompanyResource::collection($companies);
     }
