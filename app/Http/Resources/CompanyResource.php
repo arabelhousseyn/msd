@@ -29,7 +29,8 @@ class CompanyResource extends JsonResource
             'lang' => $this->lang,
             'smtp' => $this->smtp,
             'directions' => $this->directions,
-            'is_external' => $this->is_external
+            'is_external' => $this->is_external,
+            'created_at' => $this->created_at->toDateTimeString(),
         ];
     }
 }
