@@ -70,6 +70,7 @@ class CheckFolderDueDate extends Command
 
     public function configureSmtp(array $smtp): void
     {
+        Config::set('mail.mailers.smtp.encryption', $smtp['encryption']);
         Config::set('mail.mailers.smtp.host', $smtp['host']);
         Config::set('mail.mailers.smtp.port', $smtp['port']);
         Config::set('mail.mailers.smtp.username', $smtp['username']);
