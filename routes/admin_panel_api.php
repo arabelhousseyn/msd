@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1/admin')->group(function () {
 
-    Route::post('/installer', InstallerController::class);
+    Route::get('/installer', [InstallerController::class, 'index']);
+    Route::post('/installer', [InstallerController::class, 'store']);
     Route::post('/login', [AuthController::class, 'login']);
 
     Route::middleware(['auth:sanctum'])->group(function () {
