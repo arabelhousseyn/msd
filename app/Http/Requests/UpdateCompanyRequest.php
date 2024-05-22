@@ -33,7 +33,6 @@ class UpdateCompanyRequest extends FormRequest
             'smtp' =>['bail','array', 'sometimes'],
             'directions' => ['bail','array', 'sometimes'],
             'directions.*' => ['bail','string', 'sometimes'],
-            'is_external' => ['bail','boolean', 'sometimes'],
         ];
     }
 }
