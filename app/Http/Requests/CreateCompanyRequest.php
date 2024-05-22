@@ -35,7 +35,6 @@ class CreateCompanyRequest extends FormRequest
             'smtp' =>['bail','array', 'nullable'],
             'directions' => ['bail','array', 'nullable'],
             'directions.*' => ['bail','string', 'nullable'],
-            'is_external' => ['bail','boolean', 'required'],
         ];
     }
 }
