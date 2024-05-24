@@ -18,7 +18,7 @@ class CompanyController extends Controller
      */
     public function index(): JsonResource
     {
-        $companies = Company::latest('created_at')->get();
+        $companies = Company::where('is_external', true)->latest('created_at')->get();
 
         return CompanyResource::collection($companies);
     }
