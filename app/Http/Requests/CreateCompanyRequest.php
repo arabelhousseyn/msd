@@ -30,7 +30,7 @@ class CreateCompanyRequest extends FormRequest
             'color' => ['bail','string', 'nullable'],
             'phone' => ['bail','string', 'nullable', 'digits:10'],
             'address' => ['bail','string', 'required'],
-            'logo' => ['bail','file', 'image', 'mimes:jpeg,png,jpg', 'max:2048', 'nullable'],
+            'logo' => ['bail','file', 'image', 'mimes:jpeg,png,jpg', 'max:2048', 'required'],
             'lang' => ['bail','string', 'nullable', Rule::in(Lang::getValues())],
             'smtp' =>['bail','array', 'nullable'],
             'directions' => ['bail','array', 'nullable'],
