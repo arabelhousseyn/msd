@@ -41,7 +41,7 @@ class CompanyController extends Controller
             $path = $request->file('logo')->store('company', 'public');
             $path = config('app.url') . Storage::url($path);
         }
-        $company = Company::create(array_merge($request->except('logo'), ['logo' => $path]));
+        $company = Company::create(array_merge($request->except('logo'), ['logo' => $path , 'is_external' => true]));
 
         return CompanyResource::make($company);
     }
@@ -74,7 +74,7 @@ class CompanyController extends Controller
             $path = config('app.url') . Storage::url($path);
         }
 
-        $company->update(array_merge($request->except('logo'), ['logo' => $path , 'is_external' => true]));
+        $company->update(array_merge($request->except('logo'), ['logo' => $path]));
 
         return CompanyResource::make($company);
     }
