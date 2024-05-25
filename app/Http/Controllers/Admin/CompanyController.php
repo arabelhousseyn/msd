@@ -74,7 +74,7 @@ class CompanyController extends Controller
             $path = config('app.url') . Storage::url($path);
         }
 
-        $company->update(array_merge($request->except('logo'), ['logo' => $path]));
+        $company->update(array_merge($request->except('logo'), ['logo' => $path , 'is_external' => true]));
 
         return CompanyResource::make($company);
     }
