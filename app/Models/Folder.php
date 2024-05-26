@@ -3,17 +3,23 @@
 namespace App\Models;
 
 use App\Enums\FolderStatus;
+use App\Enums\ModelType;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Folder extends Model
 {
     use HasFactory, HasUuids, LogsActivity;
+
+    protected static $logAttributes = ['*'];
+
+    protected static $logOnlyDirty = true;
 
     protected $fillable = [
         'id',
@@ -38,7 +44,10 @@ class Folder extends Model
     protected static function booted(): void
     {
         static::updating(function ($model) {
-            $model->company_id = $model->user->company_id;
+            if(filled($model->user->company_id))
+            {
+                $model->company_id = $model->user->company_id;
+            }
         });
     }
 
@@ -75,5 +84,17 @@ class Folder extends Model
             ->logFillable()
             ->logOnlyDirty()
             ->useLogName($this->getMorphClass());
+    }
+
+    public function loadDDocumentHistory()
+    {
+        $document_ids = $this->documents()->pluck('id')->toArray();
+
+        return Activity::where('causer_id', auth()->id())
+            ->where('subject_type', ModelType::Document)
+            ->where('subject_id', $document_ids)
+            ->with('causer')
+            ->orderByDesc('created_at')
+            ->get();
     }
 }
