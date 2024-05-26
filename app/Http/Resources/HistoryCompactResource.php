@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\Activitylog\Models\Activity;
 
-/** @mixin Document */
-class DocumentResource extends JsonResource
+/** @mixin Activity */
+class HistoryCompactResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,12 @@ class DocumentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'format' => $this->format,
-            'size' => $this->size,
-            'url' => $this->url,
+            'context' => $this->log_name,
+            'event' => $this->event,
+            'causer_name' => $this->causer->full_name,
+            'properties' => $this->properties,
             'created_at' => $this->created_at->toDateString(),
+            'updated_at' => $this->updated_at,
         ];
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('comment');
             $table->string('notify_before');
             $table->string('status')->default(\App\Enums\FolderStatus::DRAFT);
-            $table->dateTime('end_at');
+            $table->date('end_at');
             $table->timestamps();
         });
     }

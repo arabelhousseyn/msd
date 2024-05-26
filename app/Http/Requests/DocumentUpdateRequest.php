@@ -30,18 +30,24 @@ class DocumentUpdateRequest extends FormRequest
 
     public function passedValidation(): void
     {
-        $this->merge([
-            'format' => $this->file('file')->guessExtension(),
-            'size' => $this->file('file')->getSize(),
-        ]);
+        if($this->hasFile('file')) {
+            $this->merge([
+                'format' => $this->file('file')->guessExtension(),
+                'size' => $this->file('file')->getSize(),
+            ]);
+        }
     }
 
 
     public function validated($key = null, $default = null): array
     {
-        return array_merge(parent::validated(), [
-            'format' => $this->file('file')->guessExtension(),
-            'size' => $this->file('file')->getSize(),
-        ]);
+        if($this->hasFile('file')) {
+            return array_merge(parent::validated(), [
+                'format' => $this->file('file')->guessExtension(),
+                'size' => $this->file('file')->getSize(),
+            ]);
+        }
+
+        return parent::validated();
     }
 }

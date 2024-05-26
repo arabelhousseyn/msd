@@ -14,6 +14,10 @@ class Document extends Model
 {
     use HasFactory, HasUuids, LogsActivity;
 
+    protected static $logAttributes = ['*'];
+
+    protected static $logOnlyDirty = true;
+
     protected $fillable = [
         'id',
         'title',

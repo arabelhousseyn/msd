@@ -20,10 +20,16 @@ class FolderResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'comment' => $this->comment,
-            'end_at' => $this->end_at,
+            'notify_before' => $this->notify_before,
+            'end_at' => $this->end_at->toDateString(),
             'user' => UserResource::make($this->whenLoaded('user')),
+            'user_id' => $this->user_id,
             'status' => $this->status,
             'documents' => DocumentResource::collection($this->documents),
+            'documents_count' => $this->documents()->count(),
+            'created_at' => $this->created_at->toDateString(),
+            'folder_history' => HistoryCompactResource::collection($this->activities()->with('causer')->orderByDesc('created_at')->get()),
+            'document_history' => HistoryCompactResource::collection($this->loadDDocumentHistory()),
         ];
     }
 }
