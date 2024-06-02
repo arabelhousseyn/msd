@@ -92,7 +92,7 @@ class Folder extends Model
 
         return Activity::where('causer_id', auth()->id())
             ->where('subject_type', ModelType::Document)
-            ->where('subject_id', $document_ids)
+            ->whereIn('subject_id', $document_ids)
             ->with('causer')
             ->orderByDesc('created_at')
             ->get();
