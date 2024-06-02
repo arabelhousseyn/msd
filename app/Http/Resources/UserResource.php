@@ -26,6 +26,7 @@ class UserResource extends JsonResource
             'company' => CompanyCompactResource::make($this->whenLoaded('company')),
             'email' => $this->email,
             'position' => $this->position,
+            'role' => $this->role,
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }

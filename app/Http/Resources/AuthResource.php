@@ -26,6 +26,7 @@ class AuthResource extends JsonResource
             'email' => $this->email,
             'position' => $this->position,
             'company' => CompanyCompactResource::make($this->company),
+            'permissions' => $this->getPermissionsViaRoles(),
             'token' => $this->token
         ];
     }

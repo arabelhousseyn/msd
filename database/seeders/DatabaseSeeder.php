@@ -14,7 +14,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Company::factory(10)->create();
-        User::factory(10)->create();
+        if(app()->environment() !== 'production') {
+            Company::factory(10)->create();
+            User::factory(10)->create();
+        }
+
+        $this->call([PermissionSeeder::class]);
     }
 }

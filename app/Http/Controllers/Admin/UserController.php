@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Laravolt\Avatar\Facade as Avatar;
 
@@ -62,9 +61,15 @@ class UserController extends Controller
             $path = config('app.url') . '/' . $avatar->basePath();
         }
 
+
         $password = Hash::make($request->input('password'));
 
-        $user = User::create(array_merge($request->except(['avatar', 'password']), ['password' => $password, 'avatar' => $path]));
+        $user = User::create(array_merge($request->except(['avatar', 'password', 'role']), ['password' => $password, 'avatar' => $path]));
+
+        if($request->has('role'))
+        {
+            $user->assignRole($request->input('role'));
+        }
 
         return UserResource::make($user);
     }
@@ -99,7 +104,15 @@ class UserController extends Controller
 
         $position = $request->input('is_admin') == 1 ? null : $request->input('position');
 
-        // adding role
+        if($request->input('is_admin') == 1)
+        {
+            $user->roles()->detach();
+        }else{
+            if($request->has('role'))
+            {
+                $user->syncRoles([$request->input('role')]);
+            }
+        }
 
         $user->update(array_merge($request->except(['avatar', 'position']), ['avatar' => $path, 'position' => $position]));
 

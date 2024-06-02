@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\FolderController;
 use App\Http\Controllers\Admin\DocumentController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PermissionController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1/admin')->group(function () {
@@ -19,6 +21,8 @@ Route::prefix('/v1/admin')->group(function () {
         Route::resource('users', UserController::class);
         Route::resource('folders', FolderController::class);
         Route::resource('documents', DocumentController::class);
+        Route::resource('roles', RoleController::class);
+        Route::get('permissions', PermissionController::class);
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/users/password-update/{user}', [UserController::class, 'updatePassword']);
         Route::post('/update', [AuthController::class, 'update']);

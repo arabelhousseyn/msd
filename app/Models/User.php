@@ -61,6 +61,7 @@ class User extends Authenticatable
      */
     protected $with = [
         'company',
+        'roles'
     ];
 
 
@@ -69,6 +70,13 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: fn () => $this->attributes['first_name'] . ' ' . $this->attributes['last_name'],
+        );
+    }
+
+    protected function role(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->roles()->exists() ? $this->roles()->first()->name : null,
         );
     }
 
@@ -87,4 +95,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Folder::class, 'user_id', 'id');
     }
+
+    protected function getDefaultGuardName(): string { return 'web'; }
 }
