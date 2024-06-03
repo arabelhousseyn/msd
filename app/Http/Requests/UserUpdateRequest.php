@@ -27,6 +27,7 @@ class UserUpdateRequest extends FormRequest
             'last_name' => ['sometimes', 'string'],
             'email' => ['sometimes', 'string', 'email'],
             'role' => ['nullable', 'string'],
+            'company_id' => ['nullable',  'uuid', 'exists:companies,id'],
         ];
     }
 }
