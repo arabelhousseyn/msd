@@ -23,6 +23,8 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'full_name' => $this->full_name,
             'is_admin' => $this->is_admin,
+            'is_external' => $this->is_external,
+            'company_id' => $this->company_id,
             'company' => CompanyCompactResource::make($this->whenLoaded('company')),
             'email' => $this->email,
             'position' => $this->position,

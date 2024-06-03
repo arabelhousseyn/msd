@@ -80,6 +80,14 @@ class User extends Authenticatable
         );
     }
 
+    protected function isExternal(): Attribute
+    {
+        $company = Company::where('is_external', false)->first();
+        return Attribute::make(
+            get: fn () => !($company->id === $this->attributes['company_id']),
+        );
+    }
+
     /**
      * @return BelongsTo
      */
