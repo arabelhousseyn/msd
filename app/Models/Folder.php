@@ -4,11 +4,13 @@ namespace App\Models;
 
 use App\Enums\FolderStatus;
 use App\Enums\ModelType;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -49,6 +51,17 @@ class Folder extends Model
                 $model->company_id = $model->user->company_id;
             }
         });
+    }
+
+    protected function remainingDays(): Attribute
+    {
+        $current = Carbon::now()->format('Y-m-d');
+        $days = (new \Illuminate\Support\Carbon)->diffInDays($this->attributes['end_at'], $current);
+        $remaining = $days <= $this->attributes['notify_before'] ? $this->attributes['notify_before'] - $days : -1;
+
+        return Attribute::make(
+            get: fn () => $remaining,
+        );
     }
 
     /**

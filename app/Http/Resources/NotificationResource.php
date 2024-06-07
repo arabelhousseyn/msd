@@ -5,8 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
-/** @mixin */
+/** @mixin Notification */
 class NotificationResource extends JsonResource
 {
     /**
@@ -19,7 +20,7 @@ class NotificationResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
-            'data' => $this->data,
+            'data' => $this->data['data'],
             'read_at' => $this->read_at,
             'created_at' => $this->created_at
         ];

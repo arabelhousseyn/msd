@@ -22,6 +22,7 @@ class FolderResource extends JsonResource
             'comment' => $this->comment,
             'notify_before' => $this->notify_before,
             'end_at' => $this->end_at->toDateString(),
+            'remaining_days' => $this->remaining_days,
             'user' => UserResource::make($this->whenLoaded('user')),
             'user_id' => $this->user_id,
             'status' => $this->status,

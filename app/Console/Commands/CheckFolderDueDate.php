@@ -33,38 +33,47 @@ class CheckFolderDueDate extends Command
      */
     public function handle(): void
     {
-        $current = Carbon::now()->format('Y-m-d');
+        try {
+            $current = Carbon::now()->format('Y-m-d');
 
-        $folders = Folder::all();
+            $folders = Folder::all();
 
-        foreach ($folders as $folder) {
-            $folder->load('user');
-            $days = (new \Illuminate\Support\Carbon)->diffInDays($folder->end_at, $current);
-            if($days <= $folder->notify_before)
-            {
-                $user = $folder->user;
-                $company = User::with('company')->find($user->id)->company;
-
-                $user->notify(new FolderDueDateNotification($folder));
-
-                if(filled($company))
+            foreach ($folders as $folder) {
+                $folder->load('user');
+                $days = (new \Illuminate\Support\Carbon)->diffInDays($folder->end_at, $current);
+                if($days <= $folder->notify_before)
                 {
-                    if(filled($company->smtp))
+                    $remaining_days = $folder->notify_before - $days;
+
+                    $user = $folder->user;
+                    $company = User::with('company')->find($user->id)->company;
+
+                    $user->notify(new FolderDueDateNotification($folder));
+
+                    if(filled($company))
                     {
-                        $this->configureSmtp($company->smtp);
+                        if(filled($company->smtp))
+                        {
+                            $this->configureSmtp($company->smtp);
+                        }
                     }
+
+                    Config::set('app.name', $company->name ?? env('APP_NAME'));
+
+                    $data = [
+                        'from_email' => $company->email ?? config('mail.from.address'),
+                        'from_name' => $company->name ?? config('mail.from.name'),
+                        'to_email' => $user->email,
+                        'to_name' => $user->full_name,
+                        'folder_name' => $folder->title,
+                        'remaining_days' => $remaining_days
+                    ];
+
+                    Mail::to($user->email)->send(new FolderDueDate($data));
                 }
-
-                $data = [
-                    'from_email' => $company->email ?? config('mail.from.address'),
-                    'from_name' => $company->name ?? config('mail.from.name'),
-                    'to_email' => $user->email,
-                    'to_name' => $user->full_name,
-                    'folder_name' => $folder->title,
-                ];
-
-                Mail::to($user->email)->send(new FolderDueDate($data));
             }
+        }catch (\Exception $exception){
+            Log::alert($exception->getMessage());
         }
     }
 

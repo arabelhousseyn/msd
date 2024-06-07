@@ -7,6 +7,7 @@ use App\Http\Requests\DocumentCreateRequest;
 use App\Http\Requests\DocumentUpdateRequest;
 use App\Http\Resources\DocumentResource;
 use App\Models\Document;
+use App\Support\FolderNotificationBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -49,6 +50,8 @@ class DocumentController extends Controller
         }
 
         $document = Document::create(array_merge($request->validated(), ['url' => $path]));
+
+        (new FolderNotificationBuilder($document->folder()->first(), 'document', $document, $request->file('file')))->send();
 
         return DocumentResource::make($document);
     }
