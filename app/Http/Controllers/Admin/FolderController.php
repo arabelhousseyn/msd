@@ -7,6 +7,7 @@ use App\Http\Requests\FolderCreateRequest;
 use App\Http\Requests\FolderUpdateRequest;
 use App\Http\Resources\FolderResource;
 use App\Models\Folder;
+use App\Support\FolderNotificationBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -43,6 +44,8 @@ class FolderController extends Controller
 
         $folder->refresh();
 
+        (new FolderNotificationBuilder($folder, 'create'))->send();
+
         return FolderResource::make($folder);
     }
 
@@ -67,7 +70,22 @@ class FolderController extends Controller
      */
     public function update(FolderUpdateRequest $request, Folder $folder): FolderResource
     {
+        $user_id = $folder->user_id;
+        $status = $folder->status->value;
+
         $folder->update($request->validated());
+
+        $folder->refresh();
+
+        if($user_id !== $folder->user_id)
+        {
+            (new FolderNotificationBuilder($folder, 'assign'))->send();
+        }
+
+        if($status !== $folder->status->value)
+        {
+            (new FolderNotificationBuilder($folder, 'status'))->send();
+        }
 
         return FolderResource::make($folder);
     }

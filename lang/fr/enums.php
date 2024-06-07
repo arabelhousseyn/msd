@@ -10,6 +10,7 @@ return [
         Permissions::MANAGE_FOLDERS => 'Manage Folders',
         Permissions::MANAGE_PROFILE => 'Manage Profile',
         Permissions::MANAGE_SETTINGS => 'Manage Settings',
-        Permissions::MANAGE_MAIN_COMPANY => 'Manage main company'
+        Permissions::MANAGE_MAIN_COMPANY => 'Manage main company',
+        Permissions::MANAGE_ALL_FOLDERS => 'Manage all folders assigned to all users'
     ]
 ];
