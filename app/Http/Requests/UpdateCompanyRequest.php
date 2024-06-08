@@ -32,7 +32,6 @@ class UpdateCompanyRequest extends FormRequest
             'lang' => ['bail','string', 'sometimes'],
             'smtp' =>['bail','array', 'sometimes'],
             'directions' => ['bail','array', 'sometimes'],
-            'directions.*' => ['bail','string', 'sometimes'],
         ];
     }
 }

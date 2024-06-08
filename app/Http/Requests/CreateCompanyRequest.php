@@ -34,7 +34,6 @@ class CreateCompanyRequest extends FormRequest
             'lang' => ['bail','string', 'nullable', Rule::in(Lang::getValues())],
             'smtp' =>['bail','array', 'nullable'],
             'directions' => ['bail','array', 'nullable'],
-            'directions.*' => ['bail','string', 'nullable'],
         ];
     }
 }
