@@ -11,6 +11,8 @@ use App\Support\FolderNotificationBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class DocumentController extends Controller
 {
@@ -21,9 +23,20 @@ class DocumentController extends Controller
     {
         if($request->has('folder_id'))
         {
-            $documents = Document::latest('created_at')->where('folder_id', $request->input('folder_id'))->get();
+            $documents = QueryBuilder::for(Document::class)
+                ->allowedFilters([
+                    AllowedFilter::scope('title'),
+                ])
+                ->latest('created_at')
+                ->where('folder_id', $request->input('folder_id'))
+                ->get();
         }else{
-            $documents = Document::all();
+            $documents = QueryBuilder::for(Document::class)
+                ->allowedFilters([
+                    AllowedFilter::scope('title'),
+                ])
+                ->latest('created_at')
+                ->get();
         }
 
         return DocumentResource::collection($documents);
