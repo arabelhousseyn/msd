@@ -64,6 +64,11 @@ class Folder extends Model
         );
     }
 
+    public function scopeTitle($query, $title)
+    {
+        return $query->where('title', 'like', '%' . $title . '%');
+    }
+
     /**
      * @return HasMany
      */

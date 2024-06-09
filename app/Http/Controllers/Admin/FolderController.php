@@ -10,6 +10,8 @@ use App\Models\Folder;
 use App\Support\FolderNotificationBuilder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class FolderController extends Controller
 {
@@ -19,9 +21,21 @@ class FolderController extends Controller
     public function index(Request $request): JsonResource
     {
         if($request->has('user_id')){
-            $folders = Folder::latest('created_at')->where('user_id', $request->input('user_id'))->get();
+            $folders = QueryBuilder::for(Folder::class)
+                ->allowedFilters([
+                    AllowedFilter::scope('title'),
+                ])
+                ->latest('created_at')
+                ->where('user_id', $request->input('user_id'))
+                ->get();
         }else{
-            $folders = Folder::latest('created_at')->with('user')->get();
+            $folders = QueryBuilder::for(Folder::class)
+                ->allowedFilters([
+                    AllowedFilter::scope('title'),
+                ])
+                ->latest('created_at')
+                ->with('user')
+                ->get();
         }
 
         return FolderResource::collection($folders);
