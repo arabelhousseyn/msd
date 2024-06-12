@@ -29,7 +29,7 @@ class UserCreateRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'unique:users'],
             'company_id' => ['required',  'uuid', 'exists:companies,id'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'position' => ['required', 'string'],
+            'position' => ['nullable', 'string'],
             'role' => ['string'],
         ];
     }
