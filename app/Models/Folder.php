@@ -57,10 +57,9 @@ class Folder extends Model
     {
         $current = Carbon::now()->format('Y-m-d');
         $days = (new \Illuminate\Support\Carbon)->diffInDays($this->attributes['end_at'], $current);
-        $remaining = $days <= $this->attributes['notify_before'] ? $this->attributes['notify_before'] - $days : -1;
 
         return Attribute::make(
-            get: fn () => $remaining,
+            get: fn () => $days,
         );
     }
 

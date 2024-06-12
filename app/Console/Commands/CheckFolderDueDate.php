@@ -43,8 +43,6 @@ class CheckFolderDueDate extends Command
                 $days = (new \Illuminate\Support\Carbon)->diffInDays($folder->end_at, $current);
                 if($days <= $folder->notify_before)
                 {
-                    $remaining_days = $folder->notify_before - $days;
-
                     $user = $folder->user;
                     $company = User::with('company')->find($user->id)->company;
 
@@ -66,7 +64,7 @@ class CheckFolderDueDate extends Command
                         'to_email' => $user->email,
                         'to_name' => $user->full_name,
                         'folder_name' => $folder->title,
-                        'remaining_days' => $remaining_days
+                        'remaining_days' => $days
                     ];
 
                     Mail::to($user->email)->send(new FolderDueDate($data));
