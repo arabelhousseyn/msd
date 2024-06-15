@@ -40,8 +40,8 @@ class CheckFolderDueDate extends Command
 
             foreach ($folders as $folder) {
                 $folder->load('user');
-                $days = (new \Illuminate\Support\Carbon)->diffInDays($folder->end_at, $current);
-                if($days <= $folder->notify_before)
+                $days = (new \Illuminate\Support\Carbon)->diffInDays(Carbon::parse($folder->end_at)->toDateString(), $current);
+                if($days == $folder->notify_before)
                 {
                     $user = $folder->user;
                     $company = User::with('company')->find($user->id)->company;

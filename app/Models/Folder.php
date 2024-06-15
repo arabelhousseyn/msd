@@ -56,7 +56,7 @@ class Folder extends Model
     protected function remainingDays(): Attribute
     {
         $current = Carbon::now()->format('Y-m-d');
-        $days = (new \Illuminate\Support\Carbon)->diffInDays($this->attributes['end_at'], $current);
+        $days = $current > $this->attributes['end_at'] ? -1 : (new \Illuminate\Support\Carbon)->diffInDays(Carbon::parse($this->attributes['end_at'])->toDateString(), $current) + 1;
 
         return Attribute::make(
             get: fn () => $days,

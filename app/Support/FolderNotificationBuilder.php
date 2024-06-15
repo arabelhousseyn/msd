@@ -28,7 +28,7 @@ class FolderNotificationBuilder
         $this->resolveType();
 
         $this->user = User::with('company')->find($this->folder->user_id);
-        $this->company = $this->user->company()->first();
+        $this->company = Company::where('is_external', false)->first();
         $this->configureSmtp($this->company->smtp);
     }
 
