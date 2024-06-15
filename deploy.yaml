@@ -1,0 +1,34 @@
+import:
+  - recipe/laravel.php
+  - contrib/php-fpm.php
+
+config:
+  application: 'msd'
+  repository: 'git@github.com:arabelhousseyn/msd.git'
+  php_fpm_version: '8.1'
+
+hosts:
+
+  production:
+    hostname: 197.140.11.162
+    branch: master
+    remote_user: ubuntu
+    port: 5613
+    deploy_path: '/var/www/197.140.11.162'
+    multiplexing: true
+
+tasks:
+  deploy:
+    - deploy:prepare
+    - deploy:vendors
+    - artisan:down
+    - artisan:storage:link
+    - artisan:view:cache
+    - artisan:config:cache
+    - artisan:migrate
+    - artisan:queue:restart
+    - artisan:up
+    - deploy:publish
+
+after:
+  deploy:failed: deploy:unlock
