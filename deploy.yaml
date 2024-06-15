@@ -4,7 +4,7 @@ import:
 
 config:
   application: 'msd'
-  repository: 'git@github.com:arabelhousseyn/msd.git'
+  repository: 'https://github.com/arabelhousseyn/msd.git'
   php_fpm_version: '8.1'
 
 hosts:
