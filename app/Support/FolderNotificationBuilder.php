@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Mail\FolderCreate;
 use App\Notifications\FolderCreateNotification;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\FolderAssign;
 use App\Notifications\FolderAssignNotification;
@@ -62,7 +63,11 @@ class FolderNotificationBuilder
             'folder_name' => $this->folder->title,
         ];
 
-        Mail::to($this->user->email)->send(new FolderCreate($data));
+        try {
+            Mail::to($this->user->email)->send(new FolderCreate($data));
+        }catch (\Exception $exception){
+            Log::error($exception->getMessage());
+        }
 
         $this->user->notify(new FolderCreateNotification($this->folder));
     }
@@ -81,7 +86,12 @@ class FolderNotificationBuilder
             'assigner_position' => auth()->user()->position == null ? 'Super admin' : auth()->user()->position
         ];
 
-        Mail::to($this->user->email)->send(new FolderAssign($data));
+        try {
+            Mail::to($this->user->email)->send(new FolderAssign($data));
+        }catch (\Exception $exception)
+        {
+            Log::error($exception->getMessage());
+        }
 
         $this->user->notify(new FolderAssignNotification($this->folder));
     }
@@ -99,7 +109,12 @@ class FolderNotificationBuilder
             'status' => FolderStatus::getDescription($this->folder->status->value)
         ];
 
-        Mail::to($this->user->email)->send(new FolderStatusMail($data));
+        try {
+            Mail::to($this->user->email)->send(new FolderStatusMail($data));
+        }catch (\Exception $exception)
+        {
+            Log::error($exception->getMessage());
+        }
 
         $this->user->notify(new FolderStatusNotification($this->folder));
     }
@@ -119,7 +134,12 @@ class FolderNotificationBuilder
             'document_format' => $this->document->format,
         ];
 
-        Mail::to($this->user->email)->send(new DocumentCreate($data, $this->file));
+        try {
+            Mail::to($this->user->email)->send(new DocumentCreate($data, $this->file));
+        }catch (\Exception $exception)
+        {
+            Log::error($exception->getMessage());
+        }
 
         $this->user->notify(new DocumentCreateNotification($this->document));
     }
