@@ -29,7 +29,7 @@ class FolderResource extends JsonResource
             'documents' => DocumentResource::collection($this->documents),
             'documents_count' => $this->documents()->count(),
             'created_at' => $this->created_at->toDateString(),
-            'folder_history' => HistoryCompactResource::collection($this->activities()->with('causer')->orderByDesc('created_at')->get()),
+            'folder_history' => HistoryCompactResource::collection($this->activities()->with('causer')->get()),
             'document_history' => HistoryCompactResource::collection($this->loadDDocumentHistory()),
         ];
     }

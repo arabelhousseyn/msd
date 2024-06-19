@@ -111,7 +111,6 @@ class Folder extends Model
             ->where('subject_type', ModelType::Document)
             ->whereIn('subject_id', $document_ids)
             ->with('causer')
-            ->orderByDesc('created_at')
             ->get();
     }
 }
