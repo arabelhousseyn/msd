@@ -2,12 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Document;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin Document */
-class DocumentResource extends JsonResource
+/** @mixin Comment */
+class CommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,12 +18,8 @@ class DocumentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'format' => $this->format,
-            'size' => $this->size,
-            'url' => $this->url,
             'description' => $this->description,
-            'created_at' => $this->created_at->toDateString(),
+            'creator' => UserResource::make($this->whenLoaded('creator')),
         ];
     }
 }

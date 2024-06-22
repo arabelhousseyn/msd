@@ -35,12 +35,13 @@ class FolderCreateRequest extends FormRequest
     {
         $this->merge([
             'company_id' => User::find($this->input('user_id'))->company_id,
+            'creator_id' => auth()->id(),
         ]);
     }
 
 
     public function validated($key = null, $default = null): array
     {
-        return array_merge(parent::validated(), ['company_id' => User::find($this->input('user_id'))->company_id]);
+        return array_merge(parent::validated(), ['company_id' => User::find($this->input('user_id'))->company_id ,'creator_id' => auth()->id()]);
     }
 }

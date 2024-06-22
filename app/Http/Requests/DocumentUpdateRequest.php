@@ -25,6 +25,7 @@ class DocumentUpdateRequest extends FormRequest
             'title' => ['sometimes', 'string'],
             'folder_id' => ['sometimes', 'uuid', 'exists:folders,id'],
             'file' => ['sometimes', 'file'],
+            'description' => ['sometimes', 'string'],
         ];
     }
 

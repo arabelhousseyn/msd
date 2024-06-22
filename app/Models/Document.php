@@ -25,7 +25,8 @@ class Document extends Model
         'folder_id',
         'format',
         'size',
-        'url'
+        'url',
+        'description'
     ];
 
     protected static function booted(): void

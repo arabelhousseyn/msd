@@ -30,6 +30,7 @@ Route::prefix('/v1/admin')->group(function () {
         Route::post('/users/password-update/{user}', [UserController::class, 'updatePassword']);
         Route::post('/update', [AuthController::class, 'update']);
         Route::post('/password-update', [AuthController::class, 'updatePassword']);
+        Route::post('/store-comment/{folder}', [FolderController::class, 'storeComment']);
         Route::get('/users/{user}/notifications', [UserController::class, 'notifications']);
     });
 });

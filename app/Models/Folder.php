@@ -31,6 +31,7 @@ class Folder extends Model
         'comment',
         'notify_before',
         'status',
+        'creator_id',
         'end_at'
     ];
 
@@ -77,6 +78,14 @@ class Folder extends Model
     }
 
     /**
+     * @return HasMany
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'folder_id', 'id');
+    }
+
+    /**
      * @return BelongsTo
      */
     public function company(): BelongsTo
@@ -90,6 +99,14 @@ class Folder extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 
     /**
@@ -107,8 +124,7 @@ class Folder extends Model
     {
         $document_ids = $this->documents()->pluck('id')->toArray();
 
-        return Activity::where('causer_id', auth()->id())
-            ->where('subject_type', ModelType::Document)
+        return Activity::where('subject_type', ModelType::Document)
             ->whereIn('subject_id', $document_ids)
             ->with('causer')
             ->get();
