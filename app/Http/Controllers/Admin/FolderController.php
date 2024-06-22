@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\FolderCreateRequest;
 use App\Http\Requests\FolderUpdateRequest;
 use App\Http\Resources\FolderResource;
@@ -68,7 +69,7 @@ class FolderController extends Controller
      */
     public function show(Folder $folder): FolderResource
     {
-        return FolderResource::make($folder);
+        return FolderResource::make($folder->load(['comments.creator', 'creator']));
     }
 
     /**
@@ -112,5 +113,12 @@ class FolderController extends Controller
         $folder->delete();
 
         return JsonResource::make(['id' => $folder->getKey()]);
+    }
+
+    public function storeComment(CreateCommentRequest $request, Folder $folder): FolderResource
+    {
+        $folder->comments()->create($request->validated());
+
+        return FolderResource::make($folder);
     }
 }

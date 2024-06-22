@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DocumentCreateRequest extends FormRequest
+class CreateCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,6 @@ class DocumentCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
-            'folder_id' => ['required', 'uuid', 'exists:folders,id'],
-            'file' => ['required', 'file'],
             'description' => ['required', 'string'],
         ];
     }
@@ -32,17 +29,13 @@ class DocumentCreateRequest extends FormRequest
     public function passedValidation(): void
     {
         $this->merge([
-            'format' => $this->file('file')->guessExtension(),
-            'size' => $this->file('file')->getSize(),
+            'creator_id' => auth()->id(),
         ]);
     }
 
 
     public function validated($key = null, $default = null): array
     {
-        return array_merge(parent::validated(), [
-            'format' => $this->file('file')->guessExtension(),
-            'size' => $this->file('file')->getSize(),
-        ]);
+        return array_merge(parent::validated(), ['creator_id' => auth()->id()]);
     }
 }
