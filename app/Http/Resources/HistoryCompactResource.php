@@ -20,7 +20,7 @@ class HistoryCompactResource extends JsonResource
             'id' => $this->id,
             'context' => $this->log_name,
             'event' => $this->event,
-            'causer_name' => $this->causer->full_name,
+            'causer_name' => $this->causer?->full_name,
             'properties' => $this->properties,
             'created_at' => $this->created_at->toDateString(),
             'updated_at' => $this->updated_at,
