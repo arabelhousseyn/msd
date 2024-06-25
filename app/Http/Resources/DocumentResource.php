@@ -18,10 +18,10 @@ class DocumentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
             'format' => $this->format,
             'size' => $this->size,
             'url' => $this->url,
+            'creator' => UserResource::make($this->creator),
             'description' => $this->description,
             'created_at' => $this->created_at->toDateString(),
         ];

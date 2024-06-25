@@ -20,9 +20,9 @@ class Document extends Model
 
     protected $fillable = [
         'id',
-        'title',
         'code',
         'folder_id',
+        'creator_id',
         'format',
         'size',
         'url',
@@ -39,7 +39,7 @@ class Document extends Model
     protected function size(): Attribute
     {
         return Attribute::make(
-            get: fn (string $value) => $value . " byte",
+            get: fn (string|null $value) => $value ?  $value . " byte" : '',
         );
     }
 
@@ -54,6 +54,14 @@ class Document extends Model
     public function folder(): BelongsTo
     {
         return $this->belongsTo(Folder::class, 'folder_id', 'id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'creator_id', 'id');
     }
 
     public static function generateCode($company): string

@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\FolderStatus;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class FolderCreateRequest extends FormRequest
 {
@@ -28,6 +30,7 @@ class FolderCreateRequest extends FormRequest
             'comment' => ['required', 'string'],
             'notify_before' => ['required', 'numeric'],
             'end_at' => ['required', 'date'],
+            'status' => ['sometimes', Rule::in(FolderStatus::getValues())],
         ];
     }
 

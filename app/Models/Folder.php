@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Models\Activity;
@@ -17,7 +18,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Folder extends Model
 {
-    use HasFactory, HasUuids, LogsActivity;
+    use HasFactory, HasUuids, LogsActivity, SoftDeletes;
 
     protected static $logAttributes = ['*'];
 
@@ -32,12 +33,15 @@ class Folder extends Model
         'notify_before',
         'status',
         'creator_id',
+        'is_archived',
         'end_at'
     ];
 
     protected $casts = [
         'status' => FolderStatus::class,
-        'end_at' => 'datetime'
+        'end_at' => 'datetime',
+        'is_archived' => 'boolean',
+        'deleted_at' => 'datetime',
     ];
 
     protected $with = [
@@ -64,6 +68,11 @@ class Folder extends Model
         );
     }
 
+    public function scopeTrashed($query, $value)
+    {
+        return $value ? $query->onlyTrashed() : $query->withoutTrashed();
+    }
+
     public function scopeTitle($query, $title)
     {
         return $query->where('title', 'like', '%' . $title . '%');
@@ -75,14 +84,6 @@ class Folder extends Model
     public function documents(): HasMany
     {
         return $this->hasMany(Document::class, 'folder_id', 'id');
-    }
-
-    /**
-     * @return HasMany
-     */
-    public function comments(): HasMany
-    {
-        return $this->hasMany(Comment::class, 'folder_id', 'id');
     }
 
     /**

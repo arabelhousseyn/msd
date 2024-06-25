@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
             $table->string('code');
             $table->foreignUuid('folder_id')->constrained('folders')->cascadeOnDelete();
             $table->string('format');
