@@ -64,7 +64,10 @@ class DocumentController extends Controller
 
         $document = Document::create(array_merge($request->validated(), ['url' => $path]));
 
-        (new FolderNotificationBuilder($document->folder()->first(), 'document', $document, $request->file('file')))->send();
+        if($request->hasFile('file'))
+        {
+            (new FolderNotificationBuilder($document->folder()->first(), 'document', $document, $request->file('file')))->send();
+        }
 
         return DocumentResource::make($document);
     }

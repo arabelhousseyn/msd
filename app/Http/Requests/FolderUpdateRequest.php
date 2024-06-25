@@ -30,6 +30,7 @@ class FolderUpdateRequest extends FormRequest
             'status' => ['sometimes', Rule::in(FolderStatus::getValues())],
             'notify_before' => ['sometimes', 'numeric'],
             'end_at' => ['sometimes', 'date'],
+            'is_archived' => ['sometimes', 'boolean'],
         ];
     }
 }

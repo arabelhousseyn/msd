@@ -31,6 +31,7 @@ Route::prefix('/v1/admin')->group(function () {
         Route::post('/update', [AuthController::class, 'update']);
         Route::post('/password-update', [AuthController::class, 'updatePassword']);
         Route::post('/store-comment/{folder}', [FolderController::class, 'storeComment']);
+        Route::delete('/folders/delete/{folder}', [FolderController::class, 'forceDestroy']);
         Route::get('/users/{user}/notifications', [UserController::class, 'notifications']);
     });
 });

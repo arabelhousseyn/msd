@@ -22,27 +22,42 @@ class DocumentCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string'],
             'folder_id' => ['required', 'uuid', 'exists:folders,id'],
-            'file' => ['required', 'file'],
-            'description' => ['required', 'string'],
+            'file' => ['nullable', 'file'],
+            'description' => ['nullable', 'string'],
         ];
     }
 
     public function passedValidation(): void
     {
-        $this->merge([
-            'format' => $this->file('file')->guessExtension(),
-            'size' => $this->file('file')->getSize(),
-        ]);
+        if($this->hasFile('file'))
+        {
+            $this->merge([
+                'format' => $this->file('file')->guessExtension(),
+                'size' => $this->file('file')->getSize(),
+                'creator_id' => auth()->id(),
+            ]);
+        }else{
+            $this->merge([
+                'creator_id' => auth()->id(),
+            ]);
+        }
     }
 
 
     public function validated($key = null, $default = null): array
     {
-        return array_merge(parent::validated(), [
-            'format' => $this->file('file')->guessExtension(),
-            'size' => $this->file('file')->getSize(),
-        ]);
+        if($this->hasFile('file'))
+        {
+            return array_merge(parent::validated(), [
+                'format' => $this->file('file')->guessExtension(),
+                'size' => $this->file('file')->getSize(),
+                'creator_id' => auth()->id(),
+            ]);
+        }else{
+            return array_merge(parent::validated(), [
+                'creator_id' => auth()->id(),
+            ]);
+        }
     }
 }

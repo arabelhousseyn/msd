@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateCommentRequest;
 use App\Http\Requests\FolderCreateRequest;
 use App\Http\Requests\FolderUpdateRequest;
 use App\Http\Resources\FolderResource;
@@ -23,17 +22,13 @@ class FolderController extends Controller
     {
         if($request->has('user_id')){
             $folders = QueryBuilder::for(Folder::class)
-                ->allowedFilters([
-                    AllowedFilter::scope('title'),
-                ])
+                ->allowedFilters(['is_archived', 'status', AllowedFilter::scope('trashed'), AllowedFilter::scope('title')])
                 ->latest('created_at')
                 ->where('user_id', $request->input('user_id'))
                 ->get();
         }else{
             $folders = QueryBuilder::for(Folder::class)
-                ->allowedFilters([
-                    AllowedFilter::scope('title'),
-                ])
+                ->allowedFilters(['is_archived', 'status', AllowedFilter::scope('trashed'), AllowedFilter::scope('title')])
                 ->latest('created_at')
                 ->with('user')
                 ->get();
@@ -69,7 +64,7 @@ class FolderController extends Controller
      */
     public function show(Folder $folder): FolderResource
     {
-        return FolderResource::make($folder->load(['comments.creator', 'creator']));
+        return FolderResource::make($folder->load(['creator']));
     }
 
     /**
@@ -115,10 +110,12 @@ class FolderController extends Controller
         return JsonResource::make(['id' => $folder->getKey()]);
     }
 
-    public function storeComment(CreateCommentRequest $request, Folder $folder): FolderResource
+    public function forceDestroy($folder_id): JsonResource
     {
-        $folder->comments()->create($request->validated());
+        $folder = Folder::withTrashed()->find($folder_id);
 
-        return FolderResource::make($folder);
+        $folder->forceDelete();
+
+        return JsonResource::make(['id' => $folder->getKey()]);
     }
 }
