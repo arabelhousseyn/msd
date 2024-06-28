@@ -16,7 +16,10 @@ class PermissionSeeder extends Seeder
         $permissions = Permissions::getValues();
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            $permission_check = Permission::where('name', $permission)->first();
+            if(blank($permission_check)) {
+                Permission::create(['name' => $permission]);
+            }
         }
     }
 }
