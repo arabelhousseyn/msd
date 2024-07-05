@@ -7,8 +7,6 @@ use App\Models\Company;
 use App\Models\Document;
 use App\Models\Folder;
 use App\Models\User;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Log;
 
 class PerformanceBuilder
 {
@@ -31,22 +29,22 @@ class PerformanceBuilder
         return [
             [
                 'icon' => 'mdi mdi-account-group',
-                'title' => 'Total users',
+                'title' => __('global.total_users'),
                 'value' => User::where('is_admin' , false)->count()
             ],
             [
                 'icon' => 'mdi mdi-domain',
-                'title' => 'Total companies',
+                'title' => __('global.total_companies'),
                 'value' => Company::where('is_external', true)->count()
             ],
             [
                 'icon' => 'mdi mdi-folder',
-                'title' => 'Total folders',
+                'title' => __('global.total_folders'),
                 'value' => Folder::count()
             ],
             [
                 'icon' => 'mdi mdi-file-account-outline',
-                'title' => 'Total documents',
+                'title' => __('global.total_documents'),
                 'value' => Document::count()
             ],
         ];
@@ -64,7 +62,7 @@ class PerformanceBuilder
 
         return [
             [
-                'label' => 'Number of completed folders by month',
+                'label' => __('global.title'),
                 'backgroundColor' => '#f87979',
                 'data' => $data,
             ]
