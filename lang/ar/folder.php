@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'subject' => 'Folder due date.',
-    'message' => 'Your folder named :folder_name it remains only :remaining_days days on it\'s due date.',
-    'create_subject' => 'Folder creation',
-    'create_message' => 'You created a folder named :folder_name.',
-    'assign_subject' => 'Folder Assignment',
-    'assign_message' => ':assigner_name with a position of :assigner_position has assigned to you a folder named :folder_name.',
-    'status_subject' => 'Folder Status',
-    'status_message' => 'Your folder named :folder_name status is :status.',
-    'document_subject' => 'Document Assignment',
-    'document_message' => 'A document named :document_name in a folder named :folder_name has been assigned to you.',
+    'subject' => 'تاريخ استحقاق المجلد.',
+    'message' => 'المجلد الخاص بك المسمى :folder_name يتبقى عليه :remaining_days أيام على تاريخ الاستحقاق.',
+    'create_subject' => 'إنشاء مجلد',
+    'create_message' => 'لقد قمت بإنشاء مجلد باسم :folder_name.',
+    'assign_subject' => 'تعيين مجلد',
+    'assign_message' => ':assigner_name بمنصب :assigner_position قام بتعيينك لمجلد باسم :folder_name.',
+    'status_subject' => 'حالة المجلد',
+    'status_message' => 'حالة المجلد الخاص بك المسمى :folder_name هي :status.',
+    'document_subject' => 'تعيين مستند',
+    'document_message' => 'تم تعيين مستند باسم :document_name في مجلد باسم :folder_name إليك.',
 ];

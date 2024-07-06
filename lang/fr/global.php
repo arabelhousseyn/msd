@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'total_users' => 'Total users',
-    'total_companies' => 'Total companies',
-    'total_folders' => 'Total folders',
-    'total_documents' => 'Total documents',
-    'title' => "Number of completed folders by month"
+    'total_users' => 'Nombre total d\'utilisateurs',
+    'total_companies' => 'Nombre total d\'entreprises',
+    'total_folders' => 'Nombre total de dossiers',
+    'total_documents' => 'Nombre total de documents',
+    'title' => "Nombre de dossiers complétés par mois"
 ];

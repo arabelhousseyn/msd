@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'total_users' => 'Total users',
-    'total_companies' => 'Total companies',
-    'total_folders' => 'Total folders',
-    'total_documents' => 'Total documents',
-    'title' => "Number of completed folders by month"
+    'total_users' => 'إجمالي المستخدمين',
+    'total_companies' => 'إجمالي الشركات',
+    'total_folders' => 'إجمالي المجلدات',
+    'total_documents' => 'إجمالي المستندات',
+    'title' => "عدد المجلدات المكتملة حسب الشهر"
 ];

@@ -4,18 +4,18 @@ use App\Enums\Permissions;
 
 return [
     Permissions::class => [
-        Permissions::MANAGE_DASHBOARD => 'Manage statistics',
-        Permissions::MANAGE_USERS => 'Manage Users',
-        Permissions::MANAGE_COMPANIES => 'Manage departments',
-        Permissions::MANAGE_FOLDERS => 'Manage Folders',
-        Permissions::MANAGE_PROFILE => 'Manage Profile',
-        Permissions::MANAGE_SETTINGS => 'Manage Settings',
-        Permissions::MANAGE_MAIN_COMPANY => 'Manage general settings',
-        Permissions::MANAGE_ALL_FOLDERS => 'Manage all folders assigned to all users',
-        Permissions::MANAGE_INBOX => 'Manage inbox',
-        Permissions::MANAGE_UNREAD => 'Manage unread',
-        Permissions::MANAGE_INPROGRESS => 'Manage in progress',
-        Permissions::MANAGE_ARCHIVE => 'Manage archive',
-        Permissions::MANAGE_TRASH => 'Manage trash',
+        Permissions::MANAGE_DASHBOARD => 'Gérer les statistiques',
+        Permissions::MANAGE_USERS => 'Gérer les utilisateurs',
+        Permissions::MANAGE_COMPANIES => 'Gérer les départements',
+        Permissions::MANAGE_FOLDERS => 'Gérer les dossiers',
+        Permissions::MANAGE_PROFILE => 'Gérer le profil',
+        Permissions::MANAGE_SETTINGS => 'Gérer les paramètres',
+        Permissions::MANAGE_MAIN_COMPANY => 'Gérer les paramètres généraux',
+        Permissions::MANAGE_ALL_FOLDERS => 'Gérer tous les dossiers assignés à tous les utilisateurs',
+        Permissions::MANAGE_INBOX => 'Gérer la boîte de réception',
+        Permissions::MANAGE_UNREAD => 'Gérer les non lus',
+        Permissions::MANAGE_INPROGRESS => 'Gérer en cours',
+        Permissions::MANAGE_ARCHIVE => 'Gérer l\'archive',
+        Permissions::MANAGE_TRASH => 'Gérer la corbeille',
     ]
 ];
