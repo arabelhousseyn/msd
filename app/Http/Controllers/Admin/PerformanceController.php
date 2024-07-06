@@ -13,9 +13,11 @@ class PerformanceController extends Controller
      */
     public function __invoke(Request $request): array
     {
+        $user_id = $request->has('user_id') ? $request->input('user_id') : null;
+
         return match ($request->input('type')) {
-            'cards' => (new PerformanceBuilder('cards'))->init(),
-            'bar' => (new PerformanceBuilder('bar'))->init(),
+            'cards' => (new PerformanceBuilder('cards', $user_id))->init(),
+            'bar' => (new PerformanceBuilder('bar', $user_id))->init(),
             default => [],
         };
 

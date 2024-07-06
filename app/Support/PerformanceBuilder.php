@@ -10,7 +10,7 @@ use App\Models\User;
 
 class PerformanceBuilder
 {
-    public function __construct(private readonly string $type)
+    public function __construct(private readonly string $type, private readonly string|null $user_id)
     {
     }
 
@@ -40,12 +40,14 @@ class PerformanceBuilder
             [
                 'icon' => 'mdi mdi-folder',
                 'title' => __('global.total_folders'),
-                'value' => Folder::count()
+                'value' => filled($this->user_id) ? Folder::where('user_id', $this->user_id)->count() : Folder::count()
             ],
             [
                 'icon' => 'mdi mdi-file-account-outline',
                 'title' => __('global.total_documents'),
-                'value' => Document::count()
+                'value' => filled($this->user_id)? Document::whereHas('folder', function ($query){
+                    $query->where('user_id', $this->user_id);
+                }) : Document::count()
             ],
         ];
     }
@@ -55,7 +57,10 @@ class PerformanceBuilder
         $data = [];
         $months = [1,2,3,4,5,6,7,8,9,10,11,12];
         foreach ($months as $month) {
-            $data[] = Folder::whereMonth('created_at',$month)
+            $data[] = filled($this->user_id) ? Folder::whereMonth('created_at',$month)
+                ->where('user_id', $this->user_id)
+                ->where('status', FolderStatus::TERMINATED)
+                ->count() : Folder::whereMonth('created_at',$month)
                 ->where('status', FolderStatus::TERMINATED)
                 ->count();
         }
