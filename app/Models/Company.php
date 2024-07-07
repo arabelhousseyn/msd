@@ -25,11 +25,13 @@ class Company extends Model
         'lang',
         'smtp',
         'directions',
+        'user_directions',
         'is_external'
     ];
 
     protected $casts = [
         'directions' => 'array',
+        'user_directions' => 'array',
         'smtp' => 'array',
         'is_external' => 'boolean',
         'lang' => Lang::class
