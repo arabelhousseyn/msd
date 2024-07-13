@@ -35,6 +35,14 @@ class User extends Authenticatable
         'position'
     ];
 
+    protected static function booted()
+    {
+        static::deleting(function ($user){
+            $user->created_documents()->update(['creator_id' => null]);
+            $user->created_folders()->update(['creator_id' => null]);
+        });
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -102,6 +110,16 @@ class User extends Authenticatable
     public function folders(): HasMany
     {
         return $this->hasMany(Folder::class, 'user_id', 'id');
+    }
+
+    public function createdFolders(): HasMany
+    {
+        return $this->hasMany(Folder::class, 'creator_id', 'id');
+    }
+
+    public function createdDocuments(): HasMany
+    {
+        return $this->hasMany(Document::class, 'creator_id', 'id');
     }
 
     protected function getDefaultGuardName(): string { return 'web'; }
