@@ -7,8 +7,11 @@ use App\Models\Company;
 use App\Models\Document;
 use App\Models\Folder;
 use App\Models\User;
+use Dedoc\Scramble\Scramble;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use function Symfony\Component\Translation\t;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,5 +35,9 @@ class AppServiceProvider extends ServiceProvider
             ModelType::Folder => Folder::class,
             ModelType::User => User::class,
         ]);
+
+        Scramble::routes(function (Route $route) {
+            return Str::startsWith($route->uri, 'api/');
+        });
     }
 }
