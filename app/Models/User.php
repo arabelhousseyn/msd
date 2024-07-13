@@ -38,8 +38,8 @@ class User extends Authenticatable
     protected static function booted()
     {
         static::deleting(function ($user){
-            $user->created_documents()->update(['creator_id' => null]);
-            $user->created_folders()->update(['creator_id' => null]);
+            $user->createdDocuments()->update(['creator_id' => null]);
+            $user->createdFolders()->update(['creator_id' => null]);
         });
     }
 
