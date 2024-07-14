@@ -40,7 +40,7 @@ class User extends Authenticatable
         static::deleting(function ($user){
             $user->createdDocuments()->update(['creator_id' => null]);
             $user->createdFolders()->update(['creator_id' => null]);
-            $user->folders()->delete();
+            $user->folders()->forceDelete();
         });
     }
 
