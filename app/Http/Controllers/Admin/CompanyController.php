@@ -10,7 +10,7 @@ use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Http\Request;
 class CompanyController extends Controller
 {
     /**
@@ -74,7 +74,7 @@ class CompanyController extends Controller
             $path = config('app.url') . Storage::url($path);
         }
 
-        $company->update(array_merge($request->except('logo'), ['logo' => $path]));
+        $company->update(array_merge($request->except(['logo','directions']), ['logo' => $path]));
 
         return CompanyResource::make($company);
     }
@@ -88,4 +88,26 @@ class CompanyController extends Controller
 
         return new JsonResponse(['id' => $company->getKey()]);
     }
+
+     // update the directions of the company
+    public function updateDirections(Request $request, $id)
+    {
+        $company = Company::find($id);
+        $directions = $request->input('directions');
+
+        // Validate directions input
+        //$validatedData = $request->validate([
+        //    'directions' => 'required|array',
+        //    'directions.*.title' => 'required|string',
+        //    'directions.*.name' => 'required|string',
+        //    'directions.*.img' => 'nullable|string',
+       // ]);
+
+        // Override the current directions
+        $company->directions = $directions;
+        $company->save();
+
+        return response()->json(['message' => 'Directions updated successfully','id'=>$id,'directions'=>$directions]);
+    }
+
 }

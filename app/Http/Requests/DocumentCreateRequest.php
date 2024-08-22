@@ -23,7 +23,12 @@ class DocumentCreateRequest extends FormRequest
     {
         return [
             'folder_id' => ['required', 'uuid', 'exists:folders,id'],
-            'file' => ['nullable', 'file'],
+            'file' => [
+            'sometimes',
+            'file',
+            'mimes:jpeg,jpg,png,gif,pdf,doc,docx,xls,xlsx,csv,ppt,pptx,txt,rtf,odt,ods,odp,mp4', // Specify allowed file types
+            'max:20480', // Adjust size limit if needed (20 MB here)
+        ],
             'description' => ['nullable', 'string'],
         ];
     }

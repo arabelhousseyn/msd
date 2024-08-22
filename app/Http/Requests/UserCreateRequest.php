@@ -22,7 +22,7 @@ class UserCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'avatar' => ['nullable', 'file', 'mimes:jpeg, png, jpg, gif', 'max:2048'],
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
             'is_admin' => ['required', 'boolean'],

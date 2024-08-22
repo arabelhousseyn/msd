@@ -15,10 +15,13 @@ Route::prefix('/v1/admin')->group(function () {
 
 
     Route::get('/installer', [InstallerController::class, 'index']);
+   // Route::middleware(['web'])->get('/installer', [InstallerController::class, 'index']);
     Route::post('/installer', [InstallerController::class, 'store']);
     Route::post('/login', [AuthController::class, 'login']);
-
+ //   Route::put('/companies/{id}/directions', [CompanyController::class, 'updateDirections']);
     Route::middleware(['auth:sanctum'])->group(function () {
+        Route::get('/auth/installer', [InstallerController::class, 'getAdminInfos']); 
+	Route::put('/companies/{id}/directions', [CompanyController::class, 'updateDirections']);
         Route::resource('companies', CompanyController::class);
         Route::resource('users', UserController::class);
         Route::resource('folders', FolderController::class);

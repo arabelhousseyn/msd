@@ -58,8 +58,16 @@ class DocumentController extends Controller
         $path = null;
 
         if($request->hasFile('file')){
-            $path = $request->file('file')->store('document', 'public');
-            $path = config('app.url') . Storage::url($path);
+            //old code 
+             $path = $request->file('file')->store('document', 'public');
+             $path = config('app.url') . Storage::url($path);
+            //$file = $request->file('file');
+            //$originalName = $file->getClientOriginalName();
+            //$extension = $file->getClientOriginalExtension();
+            //$uniqueName = pathinfo($originalName, PATHINFO_FILENAME) . '_' . time() . '.' . $extension;
+            
+            //$path = $file->storeAs('document', $uniqueName, 'public');
+            //$path = config('app.url') . Storage::url($path);
         }
 
         $document = Document::create(array_merge($request->validated(), ['url' => $path]));

@@ -30,7 +30,8 @@ class FolderResource extends JsonResource
             'is_archived' => $this->is_archived,
             'documents' => DocumentResource::collection($this->documents),
             'documents_count' => $this->documents()->count(),
-            'created_at' => $this->created_at->toDateString(),
+            'created_at' => $this->created_at->addHour()->format('H:i Y-m-d'),
+            'updated_at' => $this->updated_at->addHour()->format('H:i Y-m-d'),
             'folder_history' => HistoryCompactResource::collection($this->activities()->with('causer')->get()),
             'document_history' => HistoryCompactResource::collection($this->loadDDocumentHistory()),
         ];

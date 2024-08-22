@@ -17,23 +17,36 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Laravolt\Avatar\Facade as Avatar;
+use Spatie\QueryBuilder\QueryBuilder;
+use Spatie\QueryBuilder\AllowedFilter;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResource
-    {
-        if ($request->has('company_id')) {
-            $users = User::where('company_id', $request->input('company_id'))->where('id', '!=', Auth::id())->get();
-        } else {
-            $users = User::where('id', '<>', Auth::id())->latest('created_at')->paginate();
-        }
-
-        return UserResource::collection($users);
-    }
-
+    
+     public function index(Request $request): JsonResource
+     {
+         $query = QueryBuilder::for(User::class)
+             ->allowedFilters([
+                 AllowedFilter::scope('search') // Add the scope filter here
+             ])
+             ->defaultSort('-first_name'); // Default sorting by created_at in descending order
+     
+         // Apply company ID filter if provided
+         if ($request->has('company_id')) {
+             $query->where('company_id', $request->input('company_id'))
+                   ->where('id', '!=', Auth::id());
+         } else {
+             $query->where('id', '<>', Auth::id());
+         }
+     
+         // Apply pagination
+         $users = $query->paginate(20);
+     
+         return UserResource::collection($users);
+     }
     /**
      * Show the form for creating a new resource.
      */

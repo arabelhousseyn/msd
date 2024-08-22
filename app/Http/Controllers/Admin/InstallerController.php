@@ -8,7 +8,7 @@ use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
-
+use App\Http\Resources\CompanyCompactResource;
 class InstallerController extends Controller
 {
 
@@ -16,8 +16,15 @@ class InstallerController extends Controller
     {
         $company = Company::where('is_external', false)->get();
 
-        return CompanyResource::collection($company);
+        return CompanyCompactResource::collection($company);
     }
+
+    public function getAdminInfos(): JsonResource
+    {
+        $company = Company::where('is_external', false)->get();
+
+        return CompanyResource::collection($company);
+    }	
 
     /**
      * Handle the incoming request.

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use Illuminate\Support\Facades\Auth;
 /** @mixin Company */
 class CompanyResource extends JsonResource
 {
@@ -16,7 +16,7 @@ class CompanyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $data =  [
             'id' => $this->id,
             'code' => $this->code,
             'name' => $this->name,
@@ -32,5 +32,20 @@ class CompanyResource extends JsonResource
             'is_external' => $this->is_external,
             'created_at' => $this->created_at->toDateTimeString(),
         ];
+
+	 // Check if the user is authenticated
+        // Transform the data conditionally based on authentication status
+        // if (!Auth::check()) {
+            // Exclude directions and smtp information
+        //    unset($data['directions']);
+        //    unset($data['smtp']);
+        //    unset($data['email']);
+        //    unset($data['phone']);
+        //    unset($data['address']);
+        //    unset($data['created_at']);
+        //    unset($data['is_external']);
+
+        //}
+        return $data;
     }
 }

@@ -22,7 +22,7 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'avatar' => ['sometimes', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'avatar' => ['sometimes', 'file', 'mimes:jpeg, png, jpg, gif', 'max:2048'],
             'first_name' => ['sometimes', 'string'],
             'last_name' => ['sometimes', 'string'],
             'email' => ['sometimes', 'string', 'email'],

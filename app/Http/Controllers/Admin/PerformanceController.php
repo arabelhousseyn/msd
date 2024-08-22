@@ -15,11 +15,14 @@ class PerformanceController extends Controller
     {
         $user_id = $request->has('user_id') ? $request->input('user_id') : null;
 
+        $duration = $request->has('duration') ? $request->input('duration') : null;
+
         return match ($request->input('type')) {
-            'cards' => (new PerformanceBuilder('cards', $user_id))->init(),
-            'bar' => (new PerformanceBuilder('bar', $user_id))->init(),
+            'cards' => (new PerformanceBuilder('cards', $user_id,$duration))->init(),
+            'bar' => (new PerformanceBuilder('bar',$user_id, $duration))->init(),
+            'user_documents' => (new PerformanceBuilder('user_documents', $user_id,$duration))->init(),
             default => [],
-        };
+        };;
 
     }
 }

@@ -13,7 +13,6 @@ class DocumentUpdateRequest extends FormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,7 +23,12 @@ class DocumentUpdateRequest extends FormRequest
         return [
             'title' => ['sometimes', 'string'],
             'folder_id' => ['sometimes', 'uuid', 'exists:folders,id'],
-            'file' => ['sometimes', 'file'],
+            'file' => [
+            'sometimes',
+            'file',
+            'mimes:jpeg,jpg,png,gif,pdf,doc,docx,xls,xlsx,csv,ppt,pptx,txt,rtf,odt,ods,odp,mp4', // Specify allowed file types
+            'max:20480', // Adjust size limit if needed (20 MB here)
+             ],
             'description' => ['sometimes', 'string'],
         ];
     }

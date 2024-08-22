@@ -10,7 +10,7 @@ use App\Models\User;
 
 class PerformanceBuilder
 {
-    public function __construct(private readonly string $type, private readonly string|null $user_id,private readonly string|null $duration)
+    public function __construct(private readonly string $type, private readonly string|null $user_id)
     {
     }
 
@@ -19,7 +19,7 @@ class PerformanceBuilder
         return match ($this->type) {
             'cards' => $this->buildCards(),
             'bar' => $this->buildBarChart(),
-            'user_documents' => $this->buildUserDocumentsChart($this->duration),
+            'user_documents' => $this->buildUserDocumentsChart(),
             default => [],
         };
 
@@ -75,7 +75,7 @@ class PerformanceBuilder
         ];
     }
 
-/* private function buildUserDocumentsChart(): array
+private function buildUserDocumentsChart(): array
     {
         $data = [];
         $users = User::where('last_name', '=', 'M')->get();
@@ -100,68 +100,4 @@ class PerformanceBuilder
     }
 
 
-}*/
-
-
-
-private function buildUserDocumentsChart(?string $duration): array
-{
-    $data = [];
-    $users = User::where('last_name', '=', 'M')->get();
-
-    // Check if duration is not 'all' and is provided
-    $timeFrame = $duration !== 'all' && $duration ? $this->getTimeFrame($duration) : null;
-
-    foreach ($users as $user) {
-        $documentQuery = Document::where('creator_id', $user->id);
-        $folderQueryAsCreator = Folder::where('creator_id', $user->id);
-        $folderQueryAsUser = Folder::where('user_id', $user->id);
-
-        // Apply time frame filtering if a specific duration is provided
-        if ($timeFrame) {
-            $documentQuery->whereBetween('created_at', [$timeFrame['start'], $timeFrame['end']]);
-            $folderQueryAsCreator->whereBetween('created_at', [$timeFrame['start'], $timeFrame['end']]);
-            $folderQueryAsUser->whereBetween('created_at', [$timeFrame['start'], $timeFrame['end']]);
-        }
-
-        $data[] = [
-            'label' => $user->last_name . ' ' . $user->first_name,
-            'document_count' => $documentQuery->count() +
-                $folderQueryAsCreator->count() +
-                $folderQueryAsUser->count(),
-        ];
-    }
-
-    return [
-        [
-            'label' => __('All Activities'),
-            'backgroundColor' => '#4287f5',
-            'data' => array_column($data, 'document_count'),
-            'labels' => array_column($data, 'label'),
-        ]
-    ];
-}
-
-
-private function getTimeFrame(string $duration): array
-{
-    switch ($duration) {
-        case 'last_month':
-            $start = now()->subMonth()->startOfMonth();
-            $end = now()->subMonth()->endOfMonth();
-            break;
-        case 'last_week':
-            $start = now()->subWeek()->startOfWeek();
-            $end = now()->subWeek()->endOfWeek();
-            break;
-        case 'last_72_hours':
-            $start = now()->subHours(72);
-            $end = now();
-            break;
-        default:
-            throw new \InvalidArgumentException('Invalid duration');
-    }
-
-    return ['start' => $start, 'end' => $end];
-}
 }

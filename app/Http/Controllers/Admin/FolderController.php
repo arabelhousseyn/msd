@@ -20,19 +20,41 @@ class FolderController extends Controller
      */
     public function index(Request $request): JsonResource
     {
-        if($request->has('user_id')){
+       // Define the special user ID
+    $specialUserId = '9ca116d5-8060-467c-ad6e-9cff51d19c13';
+    $manager = '9cc8470c-3e4b-4f4c-9122-c374399556a2';
+
+    // Check if user_id is provided in the request
+    if ($request->has('user_id')) {
+        $userId = $request->input('user_id');
+
+        // Check if the user_id matches the special user ID
+        if ($userId === $specialUserId || $userId === $manager) {
+            // If the user is the special user, get all data
             $folders = QueryBuilder::for(Folder::class)
                 ->allowedFilters(['is_archived', 'status', AllowedFilter::scope('trashed'), AllowedFilter::scope('title')])
-                ->latest('created_at')
-                ->where('user_id', $request->input('user_id'))
-                ->get();
-        }else{
-            $folders = QueryBuilder::for(Folder::class)
-                ->allowedFilters(['is_archived', 'status', AllowedFilter::scope('trashed'), AllowedFilter::scope('title')])
-                ->latest('created_at')
+                ->latest('updated_at')
                 ->with('user')
-                ->get();
+                ->paginate(10);;
+        } else {
+            // For other users, apply the where conditions
+            $folders = QueryBuilder::for(Folder::class)
+                ->allowedFilters(['is_archived', 'status', AllowedFilter::scope('trashed'), AllowedFilter::scope('title')])
+                ->latest('updated_at')
+                ->where(function ($query) use ($userId) {
+                    $query->where('creator_id', $userId)
+                          ->orWhere('user_id', $userId);
+                })
+                ->paginate(10);
         }
+    } else {
+        // Handle cases where user_id is not provided in the request
+        $folders = QueryBuilder::for(Folder::class)
+            ->allowedFilters(['is_archived', 'status', AllowedFilter::scope('trashed'), AllowedFilter::scope('title')])
+            ->latest('updated_at')
+            ->with('user')
+            ->paginate(10);
+    }
 
         return FolderResource::collection($folders);
     }
@@ -44,6 +66,7 @@ class FolderController extends Controller
     {
         //
     }
+
 
     /**
      * Store a newly created resource in storage.

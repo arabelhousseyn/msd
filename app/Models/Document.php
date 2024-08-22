@@ -56,6 +56,20 @@ class Document extends Model
         return $this->belongsTo(Folder::class, 'folder_id', 'id');
     }
 
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saved(function ($document) {
+            // Check if the document has a related folder
+            if ($document->folder) {
+                // Update the updated_at timestamp of the related folder
+                $document->folder->touch();
+            }
+        });
+    }
+
     /**
      * @return BelongsTo
      */
